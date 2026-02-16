@@ -1,4 +1,4 @@
-id,name,datetime,venue,category,available,details
-E001,STEM Night,2026-03-10 18:00,Community Hall,All Ages,50,Hands-on science demos and snacks
-E002,Charity 5K,2026-04-02 08:00,River Park,Outdoor,120,5K run/walk fundraiser
-E003,Board Games,2026-02-28 19:00,Library Room B,Social,20,Bring a game or join one
+id,name,datetime,venue,category,available,featured,details
+E001,STEM Night,2026-03-10 18:00,Community Hall,All Ages,50,Y,Hands-on science demos and snacks
+E002,Charity 5K,2026-04-02 08:00,River Park,Outdoor,120,N,5K run/walk fundraiser
+E003,Board Games,2026-02-28 19:00,Library Room B,Social,20,N,Bring a game or join one
