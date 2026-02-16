@@ -28,7 +28,7 @@ static void render_welcome(const EventStore* store) {
         // two-line row 
         printf("| %-28s | %-19s | %-15s | %-5s |\n",
                e->name, e->datetime, e->venue, status_text(e->available));
-        printf("| %-28s | %-19s | %-15s | %-5s |\n",
+        printf("| %-28s  | %-19s | %-15s | %-5s |\n",
                "", "", "", "");
         puts("|______________________________|_____________________|_________________|_______|");
 
@@ -39,7 +39,7 @@ static void render_welcome(const EventStore* store) {
     if (shown == 0) {
         printf("| %-28s | %-19s | %-15s | %-5s|\n",
                "(none)", "", "", "");
-        printf("| %-28s | %-19s | %-15s | %-5s|\n",
+        printf("| %-28s  | %-19s | %-15s | %-5s|\n",
                "", "", "", "");
         puts("|______________________________|_____________________|_________________|_______|");
     }
@@ -73,7 +73,7 @@ static void render_event_list(const EventStore* store) {
         printf("|       |                            |                     |                 | %-5s|\n", s1);
 
         // Data row
-        printf("| %-4s |  %-26s | %-19s | %-15s | %-5s|\n",
+        printf("| %-4s  |  %-26s | %-19s | %-15s | %-5s|\n",
                e->id, e->name, e->datetime, e->venue, s2);
 
         // Separator
@@ -152,10 +152,10 @@ static void render_event_details(const Event* e) {
     }
 
     // Top block (7-ish rows like your mock)
-    printf("| %-28s | %-19s | %-25s|\n", "", "", "");
-    printf("| %-28s | %-19s | %-25s|\n", dlines[0][0] ? dlines[0] : "", dt1, cat1);
-    printf("| %-28s | %-19s | %-25s|\n", dlines[1][0] ? dlines[1] : "", dt2, cat2);
-    printf("| %-28s | %-19s | %-25s|\n", dlines[2][0] ? dlines[2] : "", "", "");
+    printf("| %-28s  | %-19s | %-25s|\n", "", "", "");
+    printf("| %-28s  | %-19s | %-25s|\n", dlines[0][0] ? dlines[0] : "", dt1, cat1);
+    printf("| %-28s  | %-19s | %-25s|\n", dlines[1][0] ? dlines[1] : "", dt2, cat2);
+    printf("| %-28s  | %-19s | %-25s|\n", dlines[2][0] ? dlines[2] : "", "", "");
     printf("| %-28s | %-19s | %-25s|\n", dlines[3][0] ? dlines[3] : "", "", "");
     printf("| %-28s | %-19s | %-25s|\n", dlines[4][0] ? dlines[4] : "", "", "");
 
@@ -238,22 +238,26 @@ static void render_enter_user_data(const AppState* st, const Event* e) {
 
 static void render_order_summary(const AppState* st, const Event* e) {
     print_line();
-    puts("ORDER SUMMARY");
-    printf("Order: %s\n", st->order_id);
-    printf("Event: %s (%s)\n", e->name, e->id);
-    printf("Reserved %d seat(s)\n", st->ticket_count);
-    print_line();
+    printf("Confirm tickets for %s:\n", e ? e->name : "Event");
+
+    puts(" ______________________________________________________________________");
+    puts("| Ticket |    Name                     |   Email                       |");
+    puts("|________|_____________________________|_______________________________|");
+
     for (int i = 0; i < st->ticket_count; i++) {
-        printf("Ticket %d: %s <%s>\n", i + 1, st->holders[i].name, st->holders[i].email);
+        const char* nm = (st->holders && st->holders[i].name[0])  ? st->holders[i].name  : "";
+        const char* em = (st->holders && st->holders[i].email[0]) ? st->holders[i].email : "";
+
+        puts("|        |                             |                               |");
+        printf("|  %-5d|  %-27s|  %-29s|\n", i + 1, nm, em);
+        puts("|________|_____________________________|_______________________________|");
     }
-    print_line();
-    puts("Commands:");
-    puts("  CONFIRM  (finalize; writes reservations.csv and updates events.csv)");
-    puts("  CANCEL   (abort)");
-    puts("  EL       (back to list)");
-    puts("  QUIT");
+
+    puts("");
+    puts("Type CONFIRM to reserve your tickets, or CANCEL to return to the main menu.");
     print_line();
 }
+
 
 void ui_render(const AppState* st, const EventStore* store) {
     if (!st || !store) return;
