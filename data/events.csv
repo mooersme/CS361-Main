@@ -2,3 +2,6 @@ id,name,datetime,venue,category,available,featured,details
 E001,STEM Night,2026-03-10 18:00,Community Hall,All Ages,50,Y,Hands-on science demos and snacks
 E002,Charity 5K,2026-04-02 08:00,River Park,Outdoor,120,N,5K run/walk fundraiser
 E003,Board Games,2026-02-28 19:00,Library Room B,Social,20,N,Bring a game or join one
+E004,Gala Event,2026-04-20 20:00,Hotel Ballroom,Adults Over 21,95,Y,Spring gala benefitting summer camp program for Charity
+E005,Support Group,2026-04-20 13:30,https://www.zoom.link/meetingcode,All Ages,15,N,Support group for people surviving just generally being alive in 2026
+
