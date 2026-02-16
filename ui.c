@@ -28,7 +28,7 @@ static void render_welcome(const EventStore* store) {
         // two-line row (optional, but matches your mockup spacing)
         printf("| %-28s | %-19s | %-15s | %-5s|\n",
                e->name, e->datetime, e->venue, status_text(e->available));
-        printf("| %-28s | %-19s | %-15s | %-5s|\n",
+        printf("| %-28s | %-19s | %-15s | %-5s |\n",
                "", "", "", "");
         puts("|______________________________|_____________________|_________________|_______|");
 
@@ -58,7 +58,7 @@ static void render_event_list(const EventStore* store) {
     print_line();
     for (size_t i = 0; i < store->count; i++) {
         const Event* e = &store->events[i];
-        printf("%-5s | %-20s | %-18s | %-15s | %d%s\n",
+        printf("%-5s | %-20s | %-18s | %-15s | %d\n",
                e->id, e->name, e->datetime, e->venue, e->available);
     }
     print_line();
