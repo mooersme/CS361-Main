@@ -73,7 +73,7 @@ static void render_event_list(const EventStore* store) {
         printf("|       |                            |                     |                 | %-5s|\n", s1);
 
         // Data row
-        printf("|  %-4s |  %-26s | %-19s | %-15s | %-5s|\n",
+        printf("| %-4s |  %-26s | %-19s | %-15s | %-5s|\n",
                e->id, e->name, e->datetime, e->venue, s2);
 
         // Separator
@@ -124,7 +124,7 @@ static void render_event_details(const Event* e) {
 
     // --- Wrap details into up to 8 lines of width 28 ---
     // Column widths: Details=28, Date/Time=19, Category=25 (based on the box drawing)
-    const int DW = 28;
+    enum {DW = 28};
     char dlines[8][DW + 1];
     for (int i = 0; i < 8; i++) dlines[i][0] = '\0';
 
