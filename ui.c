@@ -90,9 +90,9 @@ static void render_event_details(const Event* e) {
     print_line();
     printf("%s %s Details:\n", e->id, e->name);
 
-    puts(" ______________________________________________________________________________");
-    puts("|   Details                    | Date / Time         |  Category               |");
-    puts("|______________________________|_____________________|_________________________|");
+    puts(" _______________________________________________________________________________");
+    puts("|   Details                    | Date / Time         |  Category                |");
+    puts("|______________________________|_____________________|__________________________|");
 
     // Layout is fixed-height to match your wireframe.
     // Sprint 1: we print details as wrapped lines in left column.
@@ -152,20 +152,20 @@ static void render_event_details(const Event* e) {
     }
 
     // Top block (7-ish rows like your mock)
-    printf("| %-28s  | %-19s | %-25s|\n", "", "", "");
-    printf("| %-28s  | %-19s | %-25s|\n", dlines[0][0] ? dlines[0] : "", dt1, cat1);
-    printf("| %-28s  | %-19s | %-25s|\n", dlines[1][0] ? dlines[1] : "", dt2, cat2);
-    printf("| %-28s  | %-19s | %-25s|\n", dlines[2][0] ? dlines[2] : "", "", "");
+    printf("| %-28s | %-19s | %-25s|\n", "", "", "");
+    printf("| %-28s | %-19s | %-25s|\n", dlines[0][0] ? dlines[0] : "", dt1, cat1);
+    printf("| %-28s | %-19s | %-25s|\n", dlines[1][0] ? dlines[1] : "", dt2, cat2);
+    printf("| %-28s | %-19s | %-25s|\n", dlines[2][0] ? dlines[2] : "", "", "");
     printf("| %-28s | %-19s | %-25s|\n", dlines[3][0] ? dlines[3] : "", "", "");
     printf("| %-28s | %-19s | %-25s|\n", dlines[4][0] ? dlines[4] : "", "", "");
 
     // Divider row that closes the date/time + category top section
-    puts("|------------------------------|_____________________|_________________________|");
+    puts("|------------------------------|_____________________|__________________________|");
 
     // Middle block headers
     printf("| %-28s | %-19s | %-25s|\n",
            dlines[5][0] ? dlines[5] : "", "Location Details", "Tickets Remaining");
-    puts("|------------------------------|_____________________|_________________________|");
+    puts("|------------------------------|_____________________|__________________________|");
 
     // Location + tickets section (fixed lines)
     printf("| %-28s | %-19s | %-25s|\n", dlines[6][0] ? dlines[6] : "", "", "");
