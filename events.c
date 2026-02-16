@@ -28,6 +28,10 @@ int events_load_csv(const char* path, EventStore* store) {
         char* fields[16] = {0};
         int n = split_csv_line(line, fields, 16);
         if (n < 8) continue;
+        
+        for (int i = 0; i < n; i++) {
+            fields[i] = trim_ws(fields[i]);
+        }
 
         Event* e = &store->events[store->count++];
         safe_copy(e->id, sizeof(e->id), fields[0]);

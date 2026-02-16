@@ -1,5 +1,6 @@
 #include "csvutil.h"
 #include <string.h>
+#include <ctype.h>
 
 void trim_newline(char* s) {
     if (!s) return;
@@ -23,3 +24,20 @@ int split_csv_line(char* line, char** out_fields, int max_fields) {
     }
     return count;
 }
+
+
+
+char* trim_ws(char* s) {
+    if (!s) return s;
+
+    // ltrim
+    while (*s && isspace((unsigned char)*s)) s++;
+
+    // rtrim (in place)
+    char* end = s + strlen(s);
+    while (end > s && isspace((unsigned char)end[-1])) end--;
+    *end = '\0';
+
+    return s;
+}
+
