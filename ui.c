@@ -25,8 +25,8 @@ static void render_welcome(const EventStore* store) {
         const Event* e = &store->events[i];
         if (e->featured != 'Y' && e->featured != 'y') continue;
 
-        // two-line row (optional, but matches your mockup spacing)
-        printf("| %-28s | %-19s | %-15s | %-5s|\n",
+        // two-line row 
+        printf("| %-28s | %-19s | %-15s | %-5s |\n",
                e->name, e->datetime, e->venue, status_text(e->available));
         printf("| %-28s | %-19s | %-15s | %-5s |\n",
                "", "", "", "");
