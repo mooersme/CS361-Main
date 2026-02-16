@@ -52,6 +52,7 @@ static int read_line(char* buf, size_t cap) {
     return 1;
 }
 
+/*
 static int prompt_field(const char* label, char* out, size_t cap) {
     printf("%s: ", label);
     fflush(stdout);
@@ -59,6 +60,7 @@ static int prompt_field(const char* label, char* out, size_t cap) {
     if (strcmp(out, "X") == 0 || strcmp(out, "x") == 0) return -1;
     return 1;
 }
+*/
 
 static int collect_ticket_holders(AppState* st, const EventStore* store) {
     st->holders = (TicketHolder*)calloc((size_t)st->ticket_count, sizeof(TicketHolder));
