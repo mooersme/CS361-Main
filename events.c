@@ -26,7 +26,7 @@ int events_load_csv(const char* path, EventStore* store) {
 
         char* fields[16] = {0};
         int n = split_csv_line(line, fields, 16);
-        if (n < 7) continue;
+        if (n < 8) continue;
 
         Event* e = &store->events[store->count++];
         safe_copy(e->id, sizeof(e->id), fields[0]);
@@ -35,7 +35,8 @@ int events_load_csv(const char* path, EventStore* store) {
         safe_copy(e->venue, sizeof(e->venue), fields[3]);
         safe_copy(e->category, sizeof(e->category), fields[4]);
         e->available = (int)strtol(fields[5], NULL, 10);
-        safe_copy(e->details, sizeof(e->details), fields[6]);
+        e->featured = (fields[6] && fields[6][0]) ? fields[6][0] : 'N';
+        safe_copy(e->details, sizeof(e->details), fields[7]);
     }
 
     fclose(f);
@@ -67,13 +68,15 @@ int events_save_csv_atomic(const char* path, const EventStore* store) {
     FILE* f = fopen(tmp_path, "w");
     if (!f) return 0;
 
-    fprintf(f, "id,name,datetime,venue,category,available,details\n");
+    fprintf(f, "id,name,datetime,venue,category,available,featured,details\n");
     for (size_t i = 0; i < store->count; i++) {
         const Event* e = &store->events[i];
         // Sprint 1 assumption: no commas in fields.
-        fprintf(f, "%s,%s,%s,%s,%s,%d,%s\n",
-                e->id, e->name, e->datetime, e->venue, e->category, e->available, e->details);
-    }
+        fprintf(f, "%s,%s,%s,%s,%s,%d,%c,%s\n",
+        e->id, e->name, e->datetime, e->venue, e->category, e->available,
+        (e->featured ? e->featured : 'N'),
+        e->details);
+}
 
     fclose(f);
 

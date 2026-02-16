@@ -6,13 +6,50 @@ static void print_line() {
     puts("------------------------------------------------------------");
 }
 
-static void render_welcome() {
+static const char* status_text(int available) {
+    return (available > 0) ? "Open" : "Full";
+}
+
+static void render_welcome(const EventStore* store) {
     print_line();
-    puts("WELCOME");
-    puts("Type EL to view the Event List.");
+    puts("Welcome to the Event List!");
+    puts("");
+    puts("Featured Events:");
+
+    puts(" ______________________________________________________________________________");
+    puts("|        Event                 |      Date           |    Venue        | Status|");
+    puts("|______________________________|_____________________|_________________|_______|");
+
+    int shown = 0;
+    for (size_t i = 0; i < store->count; i++) {
+        const Event* e = &store->events[i];
+        if (e->featured != 'Y' && e->featured != 'y') continue;
+
+        // two-line row (optional, but matches your mockup spacing)
+        printf("| %-28s | %-19s | %-15s | %-5s|\n",
+               e->name, e->datetime, e->venue, status_text(e->available));
+        printf("| %-28s | %-19s | %-15s | %-5s|\n",
+               "", "", "", "");
+        puts("|______________________________|_____________________|_________________|_______|");
+
+        shown++;
+        if (shown >= 3) break; // cap the welcome screen to 3 featured events
+    }
+
+    if (shown == 0) {
+        printf("| %-28s | %-19s | %-15s | %-5s|\n",
+               "(none)", "", "", "");
+        printf("| %-28s | %-19s | %-15s | %-5s|\n",
+               "", "", "", "");
+        puts("|______________________________|_____________________|_________________|_______|");
+    }
+
+    puts("");
+    puts("Check EL for the full Event List, or DETAILS <EventID> for more information:");
     puts("Type QUIT to exit.");
     print_line();
 }
+
 
 static void render_event_list(const EventStore* store) {
     print_line();
@@ -99,7 +136,7 @@ void ui_render(const AppState* st, const EventStore* store) {
     if (!st || !store) return;
 
     if (st->screen == SCREEN_WELCOME) {
-        render_welcome();
+        render_welcome(store);
         return;
     }
 

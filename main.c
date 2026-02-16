@@ -133,10 +133,8 @@ int main(void) {
         if (st.screen == SCREEN_WELCOME) {
             if (strcmp(cmd, "EL") == 0) {
                 goto_list(&st);
-            } else {
-                puts("Type EL to view Event List, or QUIT.");
+                continue;
             }
-            continue;
         }
 
         if (strcmp(cmd, "CANCEL") == 0) {
