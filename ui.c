@@ -28,7 +28,7 @@ static void render_welcome(const EventStore* store) {
         // two-line row 
         printf("| %-28s | %-19s | %-15s | %-5s |\n",
                e->name, e->datetime, e->venue, status_text(e->available));
-        printf("| %-28s  | %-19s | %-15s | %-5s |\n",
+        printf("| %-28s | %-19s | %-15s | %-5s |\n",
                "", "", "", "");
         puts("|______________________________|_____________________|_________________|_______|");
 
@@ -73,7 +73,7 @@ static void render_event_list(const EventStore* store) {
         printf("|       |                            |                     |                 | %-5s|\n", s1);
 
         // Data row
-        printf("| %-4s  |  %-26s | %-19s | %-15s | %-5s|\n",
+        printf("| %-4s |  %-26s | %-19s | %-15s | %-5s |\n",
                e->id, e->name, e->datetime, e->venue, s2);
 
         // Separator
@@ -151,7 +151,7 @@ static void render_event_details(const Event* e) {
         li++;
     }
 
-    // Top block (7-ish rows like your mock)
+    // Top block
     printf("| %-28s | %-19s | %-25s|\n", "", "", "");
     printf("| %-28s | %-19s | %-25s|\n", dlines[0][0] ? dlines[0] : "", dt1, cat1);
     printf("| %-28s | %-19s | %-25s|\n", dlines[1][0] ? dlines[1] : "", dt2, cat2);
@@ -175,7 +175,7 @@ static void render_event_details(const Event* e) {
     printf("| %-28s | %-19s | %-25s|\n", "", "", "");
     printf("| %-28s | %-19s | %-25s|\n", "", "", "");
 
-    puts("|______________________________|_____________________|_________________________|");
+    puts("|______________________________|_____________________|__________________________|");
     puts("");
     puts("RESERVE <# tickets> or EL to return to Event List:");
     print_line();
@@ -194,7 +194,7 @@ static void render_reserve(const AppState* st, const Event* e) {
 
     // data row
     // Note: uses e->datetime as-is. If you want 3/1/26 formatting, we can format later.
-    printf("| %-28s | %-19s | %-15s|\n", e->name, e->datetime, e->venue);
+    printf("| %-28s | %-19s | %-15s |\n", e->name, e->datetime, e->venue);
 
     puts("|______________________________|_____________________|_________________|");
     puts(" ");
@@ -251,7 +251,7 @@ static void render_order_summary(const AppState* st, const Event* e) {
         const char* em = (st->holders && st->holders[i].email[0]) ? st->holders[i].email : "";
 
         puts("|        |                             |                               |");
-        printf("|  %-5d|  %-27s|  %-29s|\n", i + 1, nm, em);
+        printf("|  %-5d |  %-27s|  %-29s|\n", i + 1, nm, em);
         puts("|________|_____________________________|_______________________________|");
     }
 
