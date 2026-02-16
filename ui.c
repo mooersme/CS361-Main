@@ -235,10 +235,12 @@ static void render_enter_user_data(const AppState* st, const Event* e) {
 
     print_line();
 }
-
 static void render_order_summary(const AppState* st, const Event* e) {
     print_line();
     printf("Confirm tickets for %s:\n", e ? e->name : "Event");
+    printf("Order #: %s\n", st->order_id[0] ? st->order_id : "(not set)");
+    printf("Time:   %s\n", st->order_time[0] ? st->order_time : "(not set)");
+    puts("");
 
     puts(" ______________________________________________________________________");
     puts("| Ticket |    Name                     |   Email                       |");

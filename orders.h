@@ -9,4 +9,6 @@ int orders_append_reservations(const char* path, const char* order_id, const cha
 
 void orders_generate_order_id(char out_order_id[], size_t cap);
 
+void orders_now_timestamp(char out[], size_t cap);
+
 #endif

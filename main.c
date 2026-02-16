@@ -26,6 +26,7 @@ static void state_reset_order(AppState* st) {
     }
     st->order_id[0] = '\0';
     st->current_ticket = 0;
+    st->order_time[0] = '\0';
 }
 
 static void to_upper_str(char* s) {
@@ -223,6 +224,7 @@ int main(void) {
             }
 
             orders_generate_order_id(st.order_id, sizeof(st.order_id));
+            orders_now_timestamp(st.order_time, sizeof(st.order_time));
             st.screen = SCREEN_ORDER_SUMMARY;
             continue;
         }

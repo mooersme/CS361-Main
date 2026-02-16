@@ -12,13 +12,16 @@ void orders_generate_order_id(char out_order_id[], size_t cap) {
              t->tm_hour, t->tm_min, t->tm_sec);
 }
 
-static void iso_timestamp(char out[], size_t cap) {
+
+void orders_now_timestamp(char out[], size_t cap) {
     time_t now = time(NULL);
     struct tm* t = localtime(&now);
     snprintf(out, cap, "%04d-%02d-%02d %02d:%02d:%02d",
              t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
              t->tm_hour, t->tm_min, t->tm_sec);
 }
+
+
 
 int orders_append_reservations(const char* path, const char* order_id, const char* event_id,
                                const TicketHolder* holders, int ticket_count) {
@@ -28,7 +31,7 @@ int orders_append_reservations(const char* path, const char* order_id, const cha
     if (!f) return 0;
 
     char ts[32];
-    iso_timestamp(ts, sizeof(ts));
+    orders_now_timestamp(ts, sizeof(ts));
 
     for (int i = 0; i < ticket_count; i++) {
         // Sprint 1 assumption: no commas in names/emails
