@@ -1,6 +1,7 @@
 #include "events.h"
 #include "csvutil.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 static void safe_copy(char* dst, size_t cap, const char* src) {
@@ -90,3 +91,5 @@ int events_save_csv_atomic(const char* path, const EventStore* store) {
     }
     return 1;
 }
+
+
