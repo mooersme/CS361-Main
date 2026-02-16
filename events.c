@@ -27,21 +27,31 @@ int events_load_csv(const char* path, EventStore* store) {
 
         char* fields[16] = {0};
         int n = split_csv_line(line, fields, 16);
-        if (n < 8) continue;
-        
-        for (int i = 0; i < n; i++) {
-            fields[i] = trim_ws(fields[i]);
-        }
+if (n < 7) continue; // up to featured is required
 
-        Event* e = &store->events[store->count++];
-        safe_copy(e->id, sizeof(e->id), fields[0]);
-        safe_copy(e->name, sizeof(e->name), fields[1]);
-        safe_copy(e->datetime, sizeof(e->datetime), fields[2]);
-        safe_copy(e->venue, sizeof(e->venue), fields[3]);
-        safe_copy(e->category, sizeof(e->category), fields[4]);
-        e->available = (int)strtol(fields[5], NULL, 10);
-        e->featured = (fields[6] && fields[6][0]) ? fields[6][0] : 'N';
-        safe_copy(e->details, sizeof(e->details), fields[7]);
+for (int i = 0; i < n; i++) fields[i] = trim_ws(fields[i]);
+
+Event* e = &store->events[store->count++];
+
+safe_copy(e->id, sizeof(e->id), fields[0]);
+safe_copy(e->name, sizeof(e->name), fields[1]);
+safe_copy(e->datetime, sizeof(e->datetime), fields[2]);
+safe_copy(e->venue, sizeof(e->venue), fields[3]);
+safe_copy(e->category, sizeof(e->category), fields[4]);
+e->available = (int)strtol(fields[5], NULL, 10);
+e->featured  = (fields[6] && fields[6][0]) ? fields[6][0] : 'N';
+
+// details = remainder of the original line after the 7th comma
+// easiest: rebuild details from fields[7..n-1] joined by commas
+char details_buf[MAX_DETAILS] = {0};
+if (n >= 8) {
+    snprintf(details_buf, sizeof(details_buf), "%s", fields[7]);
+    for (int i = 8; i < n; i++) {
+        strncat(details_buf, ",", sizeof(details_buf) - strlen(details_buf) - 1);
+        strncat(details_buf, fields[i], sizeof(details_buf) - strlen(details_buf) - 1);
+    }
+}
+safe_copy(e->details, sizeof(e->details), trim_ws(details_buf));
     }
 
     fclose(f);
