@@ -25,6 +25,7 @@ static void state_reset_order(AppState* st) {
         st->holders = NULL;
     }
     st->order_id[0] = '\0';
+    st->current_ticket = 0;
 }
 
 static void to_upper_str(char* s) {
@@ -58,29 +59,46 @@ static int prompt_field(const char* label, char* out, size_t cap) {
     return 1;
 }
 
-static int collect_ticket_holders(AppState* st) {
+static int collect_ticket_holders(AppState* st, const EventStore* store) {
     st->holders = (TicketHolder*)calloc((size_t)st->ticket_count, sizeof(TicketHolder));
     if (!st->holders) return 0;
 
     for (int i = 0; i < st->ticket_count; i++) {
-        printf("Ticket %d\n", i + 1);
-        int r1 = prompt_field("  Name", st->holders[i].name, sizeof(st->holders[i].name));
-        if (r1 == -1) return -1;
-        if (r1 == 0) return 0;
+        st->current_ticket = i;
+        st->screen = SCREEN_ENTER_USER_DATA;
 
-        int r2 = prompt_field("  Email", st->holders[i].email, sizeof(st->holders[i].email));
-        if (r2 == -1) return -1;
-        if (r2 == 0) return 0;
+        // re-render the table with whatever is filled so far
+        ui_render(st, store);
 
-        // Sprint 1: reject commas to keep CSV simple
-        if (strchr(st->holders[i].name, ',') || strchr(st->holders[i].email, ',')) {
-            puts("Commas are not allowed in this sprint's CSV fields. Try again.");
+        char namebuf[MAX_NAME] = {0};
+        char emailbuf[MAX_EMAIL] = {0};
+
+        printf("> ");
+        fflush(stdout);
+        int r1 = read_line(namebuf, sizeof(namebuf));
+        if (!r1) return 0;
+        if (strcmp(namebuf, "X") == 0 || strcmp(namebuf, "x") == 0) return -1;
+
+        printf("> ");
+        fflush(stdout);
+        int r2 = read_line(emailbuf, sizeof(emailbuf));
+        if (!r2) return 0;
+        if (strcmp(emailbuf, "X") == 0 || strcmp(emailbuf, "x") == 0) return -1;
+
+        // keep CSV simple in Sprint 1
+        if (strchr(namebuf, ',') || strchr(emailbuf, ',')) {
+            puts("Commas are not allowed in this sprint's CSV fields. Re-enter this ticket.");
             i--;
             continue;
         }
+
+        snprintf(st->holders[i].name, sizeof(st->holders[i].name), "%s", namebuf);
+        snprintf(st->holders[i].email, sizeof(st->holders[i].email), "%s", emailbuf);
     }
+
     return 1;
 }
+
 
 static void goto_list(AppState* st) {
     st->screen = SCREEN_EVENT_LIST;
@@ -193,7 +211,7 @@ int main(void) {
             st.screen = SCREEN_ENTER_USER_DATA;
             ui_render(&st, &store);
 
-            int r = collect_ticket_holders(&st);
+            int r = collect_ticket_holders(&st, &store);
             if (r == -1) {
                 puts("Aborted.");
                 goto_list(&st);

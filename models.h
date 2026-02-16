@@ -47,6 +47,7 @@ typedef struct {
     int ticket_count;
     TicketHolder* holders;   // dynamically allocated array sized ticket_count
     char order_id[MAX_ID];   // simple generated id
+    int current_ticket; //0-based index while entering ticket holder info
 } AppState;
 
 #endif
