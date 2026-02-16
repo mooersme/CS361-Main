@@ -58,7 +58,7 @@ static void render_event_list(const EventStore* store) {
     print_line();
     for (size_t i = 0; i < store->count; i++) {
         const Event* e = &store->events[i];
-        printf("%-5s | %-20s | %-18s | %-15s | %d \n",
+        printf("%-5s | %-20s | %-18s | %-15s | %d%s\n",
                e->id, e->name, e->datetime, e->venue, e->available);
     }
     print_line();
