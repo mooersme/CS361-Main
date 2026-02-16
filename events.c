@@ -34,7 +34,7 @@ int events_load_csv(const char* path, EventStore* store) {
         safe_copy(e->datetime, sizeof(e->datetime), fields[2]);
         safe_copy(e->venue, sizeof(e->venue), fields[3]);
         safe_copy(e->category, sizeof(e->category), fields[4]);
-        e->available = (int)strtol(fields[5], NULL, 10);
+        e->available = (int)strtok(fields[5], NULL, 10);
         safe_copy(e->details, sizeof(e->details), fields[6]);
     }
 
@@ -87,3 +87,4 @@ int events_save_csv_atomic(const char* path, const EventStore* store) {
     }
     return 1;
 }
+
