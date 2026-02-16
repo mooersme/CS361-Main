@@ -70,10 +70,10 @@ static void render_event_list(const EventStore* store) {
         const char* s2 = sold_out ? "out"  : "avail";
 
         // Spacer row (blank ID/Event/Date/Venue). Status top half shows s1 if any.
-        printf("|       |                            |                     |                 | %-5s|\n", s1);
+        printf("|       |                            |                     |                 | %-5s |\n", s1);
 
         // Data row
-        printf("| %-4s |  %-26s | %-19s | %-15s | %-5s |\n",
+        printf("| %-4s  |  %-25s | %-19s | %-15s | %-5s |\n",
                e->id, e->name, e->datetime, e->venue, s2);
 
         // Separator
@@ -221,7 +221,7 @@ static void render_enter_user_data(const AppState* st, const Event* e) {
         puts("|        |                             |                               |");
 
         // data row
-        printf("|  %-5d|  %-27s|  %-29s|\n", i + 1, nm, em);
+        printf("|  %-5d |  %-27s|  %-29s|\n", i + 1, nm, em);
 
         // separator
         puts("|________|_____________________________|_______________________________|");
