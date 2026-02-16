@@ -20,6 +20,7 @@ typedef struct {
     char venue[MAX_VENUE];
     char category[MAX_CAT];
     int  available;
+    char featured;
     char details[MAX_DETAILS];
 } Event;
 
@@ -49,3 +50,4 @@ typedef struct {
 } AppState;
 
 #endif
+
