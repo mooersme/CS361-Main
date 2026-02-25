@@ -52,15 +52,40 @@ static int read_line(char* buf, size_t cap) {
     return 1;
 }
 
-/*
-static int prompt_field(const char* label, char* out, size_t cap) {
-    printf("%s: ", label);
-    fflush(stdout);
-    if (!read_line(out, cap)) return 0;
-    if (strcmp(out, "X") == 0 || strcmp(out, "x") == 0) return -1;
+
+int write_text_file(const char* path, const char* text) {
+    FILE* f = fopen(path, "wb");
+    if (!f) return 0;
+    fputs(text, f);
+    fclose(f);
     return 1;
 }
-*/
+
+int generate_ics_via_curl(const char* json, const char* out_ics_path) {
+    const char* tmp = "tmp_event.json";
+    if (!write_text_file(tmp, json)) return 0;
+
+    // Use curl.exe on Windows if available; otherwise curl on Linux/mac
+    // This form avoids shell-escaping the JSON.
+#ifdef _WIN32
+    const char* curlbin = "curl.exe";
+#else
+    const char* curlbin = "curl";
+#endif
+
+    char cmd[2048];
+    snprintf(cmd, sizeof(cmd),
+        "%s -sS -X POST http://127.0.0.1:8080/ics "
+        "-H \"Content-Type: application/json\" "
+        "--data-binary @%s "
+        "-o \"%s\"",
+        curlbin, tmp, out_ics_path
+    );
+
+    int rc = system(cmd);
+    remove(tmp);
+    return (rc == 0);
+}
 
 static int collect_ticket_holders(AppState* st, const EventStore* store) {
     st->holders = (TicketHolder*)calloc((size_t)st->ticket_count, sizeof(TicketHolder));
